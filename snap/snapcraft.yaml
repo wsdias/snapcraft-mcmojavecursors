@@ -1,0 +1,32 @@
+name: wsdias-mcmojavecursors
+version: 'master'
+architectures:
+  - build-on: [amd64]
+    build-for: [all]
+summary: McMojave cursor theme by vinceliuice
+description: |
+  A snap that exports the McMojave cursor theme.
+
+base: core22
+grade: stable
+confinement: strict
+
+slots:
+  icon-themes:
+    interface: content
+    source:
+      read:
+        - $SNAP/share/icons/McMojave-cursors
+
+parts:
+  mcmojave-cursor-theme:
+    plugin: nil
+    source: https://github.com/vinceliuice/McMojave-cursors.git
+    source-type: git
+    override-build: |
+        snapcraftctl build
+        mkdir -p $SNAPCRAFT_PART_INSTALL/share/icons/McMojave-cursors
+        ./install.sh
+        mv /usr/share/icons/McMojave-cursors/* $SNAPCRAFT_PART_INSTALL/share/icons/McMojave-cursors/
+    stage:
+      - share/icons/McMojave-cursors
